@@ -29,3 +29,42 @@ post '/songs' do
     erb :'songs/new'
   end
 end
+
+get 'users/signup' do
+	erb :'users/signup'
+end
+
+get 'users/login' do
+	erb :'users/login'
+end
+
+get 'users/:id' do
+	@user = Users.find params[:id]
+	erb :'users/user_profile'
+end
+
+post '/users' do
+	@user = User.new(
+		username: params[:username],
+		email: params[:email],
+		password: params[:password]
+	)
+	if @user.save
+		redirect '/users/:id'
+	else
+		erb :'users/signup'
+	end
+end
+
+post '/users/login' do
+	@user = User.where(
+		email: params[:email],
+		password: params[:password]
+	)
+	if @user.username && @user.password
+		redirect '/songs'
+	else
+		erb :'users/login'
+	end
+end
+
