@@ -30,16 +30,16 @@ post '/songs' do
   end
 end
 
-get 'users/signup' do
+get '/users/signup' do
 	erb :'users/signup'
 end
 
-get 'users/login' do
+get '/users/login' do
 	erb :'users/login'
 end
 
-get 'users/:id' do
-	@user = Users.find params[:id]
+get '/users/:id' do
+	@user = User.find params[:id]
 	erb :'users/user_profile'
 end
 
@@ -50,7 +50,7 @@ post '/users' do
 		password: params[:password]
 	)
 	if @user.save
-		redirect '/users/:id'
+		redirect '/users/login'
 	else
 		erb :'users/signup'
 	end
@@ -61,7 +61,7 @@ post '/users/login' do
 		email: params[:email],
 		password: params[:password]
 	)
-	if @user.username && @user.password
+	if @user.exists
 		redirect '/songs'
 	else
 		erb :'users/login'
